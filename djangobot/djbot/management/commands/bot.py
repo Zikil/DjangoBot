@@ -4,6 +4,7 @@ from djbot.models import *
 import os 
 from telegram.ext import Updater, CommandHandler
 from telegram.ext import MessageHandler, Filters, InlineQueryHandler
+import telegram
 
 TOKEN = '1033970790:AAHgVbhB3yDw38jC4CIiEoi6jzbP5k_h0HQ'
 baselink = os.getcwd() + '/media/tb/'
@@ -13,17 +14,24 @@ groups_tb = {'ИПМИ-20': baselink + 'ИИТиАС_2.pdf', 'ИПМИ-21': base
 def add_message(update):
     chat_id = update.message.chat_id
     text = update.message.text
+    print(chat_id)
     p, _ = Profile.objects.get_or_create(
-        external_id=chat_id,
-        defaults={
-            'name': update.message.from_user.username,
-        }
+    external_id=chat_id,
+    # defaults={
+    #     'name': update.message.from_user.username,
+    # }
     )
     m = Message(
-        profile=p,
-        text=text,
+    profile=p,
+    text=text,
     )
     m.save()
+
+# def send_mes_to_users(text, users):
+#     text = text
+#     # for u in users:
+#     #     telegram.bot.send_message(chat_id=u, text=text)
+#     telegram.bot.send_message(chat_id='', text=text)
 
 class Command(BaseCommand):
     updater = Updater(token=TOKEN)
@@ -31,7 +39,7 @@ class Command(BaseCommand):
 
     # функция обработки команды '/start'
     def start(update, context):
-        chat_id = update.message.chat_id
+        chat_id = update.effective_chat.id
         text = update.message.text
         context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
         p, _ = Profile.objects.get_or_create(
@@ -39,12 +47,7 @@ class Command(BaseCommand):
             defaults={
                 'name': update.message.from_user.username,
             }
-        ) 
-        # m = Message(
-        #     profile=p,
-        #     text=text,
-        # )
-        # m.save()
+        )
 
     def all_groups(update, context):
         text = ''
@@ -71,6 +74,7 @@ class Command(BaseCommand):
         else:
             context.bot.send_message(chat_id=update.effective_chat.id, text=text)
             add_message(update)
+            
 
     # функция обработки не распознных команд
     def unknown(update, context):
