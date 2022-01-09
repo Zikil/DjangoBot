@@ -26,12 +26,8 @@ SECRET_KEY = 'django-insecure-=%-slwt#e@qj29zw4tt8)4035(3%e3y7)m4dbd7g3sp!^b8x9=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = ['zikil.pythonanywhere.com']
-=======
-ALLOWED_HOSTS = ["*"]
->>>>>>> acd653323cb61aebe5eef17ffb53ddf86764d2c8
 
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -126,11 +122,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = "/home/Zikil/DjangoBot/djangobot/static"
-<<<<<<< HEAD
-# or, eg,
-#STATIC_ROOT = os.path.join(BASE_DIR, "static")
-=======
->>>>>>> acd653323cb61aebe5eef17ffb53ddf86764d2c8
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
