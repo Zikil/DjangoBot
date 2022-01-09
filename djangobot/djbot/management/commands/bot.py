@@ -9,7 +9,7 @@ import telegram
 TOKEN = '1033970790:AAHgVbhB3yDw38jC4CIiEoi6jzbP5k_h0HQ'
 baselink = os.getcwd() + '/media/tb/'
 
-groups_tb = {'ИПМИ-20': baselink + 'ИИТиАС_2.pdf', 'ИПМИ-21': baselink + 'ИИТиАС_1.pdf'}
+#groups_tb = {'ИПМИ-20': baselink + 'ИИТиАС_2.pdf', 'ИПМИ-21': baselink + 'ИИТиАС_1.pdf'}
 
 def add_message(update):
     chat_id = update.message.chat_id
@@ -27,6 +27,21 @@ def add_message(update):
     )
     m.save()
 
+def add_message(update, text):
+    chat_id = update.message.chat_id
+    text = text
+    print(chat_id)
+    p, _ = Profile.objects.get_or_create(
+    external_id=chat_id,
+    # defaults={
+    #     'name': update.message.from_user.username,
+    # }
+    )
+    m = Message(
+    profile=p,
+    text=text,
+    )
+    m.save()
 # def send_mes_to_users(text, users):
 #     text = text
 #     # for u in users:
