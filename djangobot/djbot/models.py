@@ -27,7 +27,7 @@ class Groups(models.Model):
 
 class Profile(models.Model):
     external_id = models.PositiveIntegerField(verbose_name='Внешний ID пользователя', unique=True)
-    name = models.TextField(verbose_name='Имя пользователя',)
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         return f'#{self.external_id} {self.name}'

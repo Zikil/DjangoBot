@@ -14,34 +14,38 @@ baselink = os.getcwd() + '/media/tb/'
 def add_message(update):
     chat_id = update.message.chat_id
     text = update.message.text
-    print(chat_id)
+    username = ''
+    if update.message.from_user.last_name:
+        username = update.message.from_user.first_name + ' ' + update.message.from_user.last_name
+    else: 
+        username = update.message.from_user.first_name
+    # print(username)
     p, _ = Profile.objects.get_or_create(
-    external_id=chat_id,
-    # defaults={
-    #     'name': update.message.from_user.username,
-    # }
+        external_id=chat_id,
+        defaults={'name': username}
     )
+    # if Profile.objects.get(external_id=chat_id)
     m = Message(
     profile=p,
     text=text,
     )
     m.save()
 
-def add_message(update, text):
-    chat_id = update.message.chat_id
-    text = text
-    print(chat_id)
-    p, _ = Profile.objects.get_or_create(
-    external_id=chat_id,
-    # defaults={
-    #     'name': update.message.from_user.username,
-    # }
-    )
-    m = Message(
-    profile=p,
-    text=text,
-    )
-    m.save()
+# def add_message(update, text):
+#     chat_id = update.message.chat_id
+#     text = text
+#     print(chat_id)
+#     p, _ = Profile.objects.get_or_create(
+#     external_id=chat_id,
+#     # defaults={
+#     #     'name': update.message.from_user.username,
+#     # }
+#     )
+#     m = Message(
+#     profile=p,
+#     text=text,
+#     )
+#     m.save()
 # def send_mes_to_users(text, users):
 #     text = text
 #     # for u in users:
@@ -57,11 +61,15 @@ class Command(BaseCommand):
         chat_id = update.effective_chat.id
         text = update.message.text
         context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+        username = ''
+        if update.message.from_user.last_name:
+            username = update.message.from_user.first_name + ' ' + update.message.from_user.last_name
+        else: 
+            username = update.message.from_user.first_name
+        # print(username)
         p, _ = Profile.objects.get_or_create(
             external_id=chat_id,
-            defaults={
-                'name': update.message.from_user.username,
-            }
+            defaults={'name': username}
         )
 
     def all_groups(update, context):
@@ -87,8 +95,8 @@ class Command(BaseCommand):
             link = baselink + Timetable.objects.filter(id = link_id).values('link').get().get('link')
             context.bot.send_document(chat_id=update.effective_chat.id, document=open(link, 'rb'))
         else:
-            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
             add_message(update)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text)
             
 
     # функция обработки не распознных команд
